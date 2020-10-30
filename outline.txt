@@ -1,0 +1,17 @@
+Connection Opened
+S: My IP;UID is _____ // IP will be each seeker/creators UID
+C: My IP;UID is _____ // creator will store the IP of the seeker
+S: I am offering _____ service // creator will also store the service this seeker gives
+C:  I have/don’t have corresponding job for you _____ // if the job isn't available then a not available code will be returned and the connection will be close
+S: I accept/deny _____ job // when the seeker denies the job will stay available for other seekers that can also complete that same job
+C: job data sent
+S: received job data
+C: Connection closed
+
+Job seeker has completed job
+Connection Opened
+S: My IP;UID is  _____
+C: My IP;UID is  _____, waiting for return status of job
+S: Job completed with code 0
+S: result data (may have to break this up more)
+C: Connection closed // if there are more segments to the job or there is another job the seeker can do then the seeker will be asked if it wants to do the new job before the connection is closed.

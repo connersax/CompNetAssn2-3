@@ -1,5 +1,6 @@
 
 import socket
+from array import *
 
 
 def creator_program():
@@ -16,10 +17,14 @@ def creator_program():
     conn, address = server_socket.accept()  # accept new connection
     print("Connection from: " + str(address))
 
-    for i in range(1,3):
+    # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
+    available = [[1,1],[2,2],[1,2]] # defined as [job,size]
+
+
+    while True:
         data = conn.recv(1024).decode()
-        print("\nfrom connected user: " + str(data))
-        conn.send("recv".encode())
+        print("job_seeker: " + str(data))
+        conn.send(bytes([4]))
 
     # while True:
     #     # receive data stream. it won't accept data packet greater than 1024 bytes

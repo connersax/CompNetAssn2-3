@@ -9,12 +9,11 @@ def seeker_program():
     client_socket = socket.socket()  # instantiate
     client_socket.connect((host, port))  # connect to the server
 
-    # message = input(" -> ")  # take input
-
-    for i in range(1,3):
+    # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
+    while True:
         client_socket.send("Hello".encode())
-        data = client_socket.recv(1024).decode()  # receive response
-        print('Received from server: ' + data)  # show in terminal
+        data = client_socket.recv(1)  # receive response
+        print('job_creator: ' + str(int.from_bytes(data, "big")))  # show in terminal
 
     # while message.lower().strip() != 'bye':
     #     client_socket.send(message.encode())  # send message
