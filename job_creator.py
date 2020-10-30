@@ -1,11 +1,14 @@
 
 import socket
+import time
 from array import *
 
 
 def creator_program():
     # get the hostname
     host = socket.gethostname()
+    host_ip = socket.gethostbyname(host)
+    ip_uid = str(host_ip) + ";1234"
     port = 5000  # initiate port no above 1024
 
     server_socket = socket.socket()  # get instance
@@ -22,9 +25,25 @@ def creator_program():
 
 
     while True:
-        data = conn.recv(1024).decode()
-        print("job_seeker: " + str(data))
-        conn.send(bytes([4]))
+        data = conn.recv(1024).decode() # IP;UID
+        print("job_seeker: My IP;UID is " + str(data))
+        conn.send(ip_uid.encode()) # My IP:UID
+        print("job_creator: My IP;UID is " + ip_uid)
+        data = int.from_bytes(conn.recv(1), "big")) # seeker service
+
+        is_available = False
+        for job in available: # testing if job is available
+            if job[0] == data:
+                is_available = True
+
+        if is_available == True:
+            conn.send(bytes([1])) # if the job is available send a 1
+        else:
+            conn.send(bytes([0])) # if the job is available send a 0
+
+        time.sleep(5)
+
+
 
     # while True:
     #     # receive data stream. it won't accept data packet greater than 1024 bytes
