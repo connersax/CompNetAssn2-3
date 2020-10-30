@@ -30,6 +30,7 @@ def creator_program():
         conn.send(ip_uid.encode()) # My IP:UID
         print("job_creator: My IP;UID is " + ip_uid)
         data = int.from_bytes(conn.recv(1), "big")) # seeker service
+        print("job_seeker: I am offering " + data + "service")
 
         is_available = False
         for job in available: # testing if job is available
@@ -38,8 +39,10 @@ def creator_program():
 
         if is_available == True:
             conn.send(bytes([1])) # if the job is available send a 1
+            print("job_creator: I have corresponding job " + data)
         else:
             conn.send(bytes([0])) # if the job is available send a 0
+            print("job_creator: I do not have corresponding job " + data)
 
         time.sleep(5)
 
