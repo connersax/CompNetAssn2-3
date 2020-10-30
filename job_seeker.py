@@ -30,9 +30,9 @@ def seeker_program():
 
 # send back accept or deny response
         print("job_seeker: I accept " + str(int.from_bytes(service, "big")) + " job")
-        client_socket.send(True)
+        client_socket.send(bytes([1]))
 
-        #RECEIVE JOB DATA
+        #RECEIVE JOB DA
 
 
     # while message.lower().strip() != 'bye':
