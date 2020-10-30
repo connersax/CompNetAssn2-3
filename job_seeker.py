@@ -12,16 +12,27 @@ def seeker_program():
 
 
 
-    for i in range(1,5):
-        # client_socket.send("Hello".encode()) # send message
+    for i in range(1,2):
+        print("job_seeker: My IP;UID is " + hostip)
         client_socket.send(hostip.encode()) # send ip
-        data = client_socket.recv(1)    # receive ip
-        print('job_creator: ' + str(data)  # show in terminal
+        data = client_socket.recv(1024).decode()    # receive ip
+        print("job_creator: My IP;UID is " + str(data))  # show in terminal
 
 # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-        client_socket.send(bytes[2])    # send service/skill
-        data = client_socket.recv(1)    # receive job or no job available
-        print('job_creator: ' + str(int.from_bytes(data, "big")))  # show in terminal
+        service = bytes([2])
+        print("job_seeker: I am offering 2 service")
+        client_socket.send(service)    # send service/skill
+        data = int.from_bytes(client_socket.recv(1), "big")    # receive job or no job available
+        if data == 1:
+            print("job_creator: I have corresponding job " + str(int.from_bytes(service, "big")) )
+        else:
+            print("job_creator: I do not have corresponding job " + str(int.from_bytes(service, "big")) )
+
+# send back accept or deny response
+        print("job_seeker: I accept " + str(int.from_bytes(service, "big")) + " job")
+        client_socket.send(True)
+
+        #RECEIVE JOB DATA
 
 
     # while message.lower().strip() != 'bye':
