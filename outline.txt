@@ -5,7 +5,6 @@ S: I am offering _____ service // creator will also store the service this seeke
 C:  I have/don’t have corresponding job for you _____ // if the job isn't available then a not available code will be returned and the connection will be close
 S: I accept/deny _____ job // when the seeker denies the job will stay available for other seekers that can also complete that same job
 C: job data sent
-S: received job data
 C: Connection closed
 
 Job seeker has completed job

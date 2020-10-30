@@ -29,20 +29,39 @@ def creator_program():
         print("job_seeker: My IP;UID is " + str(data))
         conn.send(ip_uid.encode()) # My IP:UID
         print("job_creator: My IP;UID is " + ip_uid)
-        data = int.from_bytes(conn.recv(1), "big")) # seeker service
-        print("job_seeker: I am offering " + data + "service")
+        data = int.from_bytes(conn.recv(1), "big") # seeker service
+        print("job_seeker: I am offering " + str(data) + "service")
 
         is_available = False
+        available_index = 0
         for job in available: # testing if job is available
-            if job[0] == data:
+            if job[0] == data and job[1] != 0: # job has to match and have a size greater then 0
                 is_available = True
+
+            available_index += 1 # only increments when not available since index starts at 0
 
         if is_available == True:
             conn.send(bytes([1])) # if the job is available send a 1
-            print("job_creator: I have corresponding job " + data)
+            print("job_creator: I have corresponding job " + str(data))
+
+            data = int.from_bytes(conn.recv(1), "big") # seeker accepting or denying job
+            if data == 1:
+                available[available_index][1] -= 1
+                print("job_seeker: I accept job")
+                conn.send("job_data".encode()) # creator sending job data
+                print("job_creator: Job data sent")
+                if :
+                    pass
+            else:
+                print("job_seeker: I deny job")
         else:
-            conn.send(bytes([0])) # if the job is available send a 0
-            print("job_creator: I do not have corresponding job " + data)
+            conn.send(bytes([0])) # if the job is not available send a 0
+            print("job_creator: I do not have corresponding job " + str(data))
+            conn.close()
+            print("Connection closed with seeker")
+
+
+
 
         time.sleep(5)
 
