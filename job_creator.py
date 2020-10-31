@@ -1,6 +1,7 @@
 
 import socket
 import time
+import os
 from array import *
 
 
@@ -8,7 +9,7 @@ def creator_program():
     # get the hostname
     host = socket.gethostname()
     host_ip = socket.gethostbyname(host)
-    ip_uid = str(host_ip) + ";1234"
+    ip_uid = str(host_ip) + ";" + str(os.getpid())
     port = 5000  # initiate port no above 1024
 
     server_socket = socket.socket()  # get instance

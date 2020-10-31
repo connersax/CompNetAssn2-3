@@ -1,10 +1,12 @@
 
 import socket
+import os
 
 
 def seeker_program():
     host = socket.gethostname()  # as both code is running on same pc
     hostip = socket.gethostbyname(host) # gets the ip address
+    ip_uid = str(hostip) + ";" + str(os.getpid())
     port = 5000  # socket server port number
 
 
@@ -14,8 +16,8 @@ def seeker_program():
         client_socket = socket.socket()  # instantiate
         client_socket.connect((host, port))  # connect to the server
 
-        print("job_seeker: My IP;UID is " + hostip)
-        client_socket.send(hostip.encode()) # send ip
+        print("job_seeker: My IP;UID is " + ip_uid)
+        client_socket.send(ip_uid.encode()) # send ip
         data = client_socket.recv(1024).decode()    # receive ip
         print("job_creator: My IP;UID is " + str(data))  # show in terminal
 
