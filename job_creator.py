@@ -17,14 +17,16 @@ def creator_program():
 
     # configure how many client the server can listen simultaneously
     server_socket.listen(1)
-    conn, address = server_socket.accept()  # accept new connection
-    print("Connection from: " + str(address))
+
 
     # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-    available = [[1,1],[2,2],[1,2]] # defined as [job,size]
+    available = [[1,1],[1,2],[1,2]] # defined as [job,size]
 
 
     while True:
+        conn, address = server_socket.accept()  # accept new connection
+        print("Connection from: " + str(address))
+
         data = conn.recv(1024).decode() # IP;UID
         print("job_seeker: My IP;UID is " + str(data))
         conn.send(ip_uid.encode()) # My IP:UID

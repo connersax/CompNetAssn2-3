@@ -7,19 +7,20 @@ def seeker_program():
     hostip = socket.gethostbyname(host) # gets the ip address
     port = 5000  # socket server port number
 
-    client_socket = socket.socket()  # instantiate
-    client_socket.connect((host, port))  # connect to the server
 
 
 
-    for i in range(1,2):
+    for i in range(1,3):
+        client_socket = socket.socket()  # instantiate
+        client_socket.connect((host, port))  # connect to the server
+
         print("job_seeker: My IP;UID is " + hostip)
         client_socket.send(hostip.encode()) # send ip
         data = client_socket.recv(1024).decode()    # receive ip
         print("job_creator: My IP;UID is " + str(data))  # show in terminal
 
 # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-        service = bytes([2])
+        service = bytes([i])
         print("job_seeker: I am offering 2 service")
         client_socket.send(service)    # send service/skill
         data = int.from_bytes(client_socket.recv(1), "big")    # receive job or no job available
@@ -38,7 +39,7 @@ def seeker_program():
         print("job_creator: Job data sent")
         print("job_seeker: Job data received- " + str(data))
 
-    client_socket.close()  # close the connection
+        client_socket.close()  # close the connection
 
 
 if __name__ == '__main__':
