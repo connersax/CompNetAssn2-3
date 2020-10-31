@@ -37,6 +37,7 @@ def creator_program():
         for job in available: # testing if job is available
             if job[0] == data and job[1] != 0: # job has to match and have a size greater then 0
                 is_available = True
+                break
 
             available_index += 1 # only increments when not available since index starts at 0
 
@@ -50,8 +51,6 @@ def creator_program():
                 print("job_seeker: I accept job")
                 conn.send("job_data".encode()) # creator sending job data
                 print("job_creator: Job data sent")
-                if :
-                    pass
             else:
                 print("job_seeker: I deny job")
         else:
