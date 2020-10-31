@@ -1,5 +1,6 @@
 
 import socket
+import time
 import os
 
 
@@ -23,7 +24,7 @@ def seeker_program():
 
 # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
         service = bytes([i])
-        print("job_seeker: I am offering 2 service")
+        print("job_seeker: I am offering" + str(i) + "service")
         client_socket.send(service)    # send service/skill
         data = int.from_bytes(client_socket.recv(1), "big")    # receive job or no job available
         if data == 1:
@@ -38,11 +39,27 @@ def seeker_program():
 # RECEIVE JOB DATA
         data = client_socket.recv(1024).decode()
         job_data = data # this would later be saved and used
-        print("job_creator: Job data sent")
-        print("job_seeker: Job data received- " + str(data))
+        print("job_creator: Job data sent\n")
 
         client_socket.close()  # close the connection
 
+        time.sleep(2) # job data is processing
+
+        # reconnecting to give result
+        client_socket = socket.socket()  # instantiate
+        client_socket.connect((host, port))  # connect to the server
+
+        print("job_seeker: My IP;UID is " + ip_uid)
+        client_socket.send(ip_uid.encode()) # send ip
+
+        print("job_creator: My IP;UID is " + ip_uid + " waiting for return status of job")
+        data = client_socket.recv(1024).decode()    # creator ip
+
+        print("job_seeker: Job completed with code 0")
+        client_socket.send(bytes([0]))
+
+        print("job_seeker: Sending result data\n")
+        client_socket.send("completed".encode()) # sending result
 
 if __name__ == '__main__':
     seeker_program()

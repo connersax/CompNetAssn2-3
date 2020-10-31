@@ -21,51 +21,75 @@ def creator_program():
 
 
     # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-    available = [[1,1],[1,2],[1,2]] # defined as [job,size]
+    available = [[1,1],[3,2]] # defined as [job,size]
+    stored_seekers = [] # will be used when there is a job available it can do
+    current_job_seekers = [] # seekers currently doing jobs from this creator
 
 
     while True:
         conn, address = server_socket.accept()  # accept new connection
-        print("Connection from: " + str(address))
 
-        data = conn.recv(1024).decode() # IP;UID
-        print("job_seeker: My IP;UID is " + str(data))
-        conn.send(ip_uid.encode()) # My IP:UID
-        print("job_creator: My IP;UID is " + ip_uid)
-        data = int.from_bytes(conn.recv(1), "big") # seeker service
-        print("job_seeker: I am offering " + str(data) + "service")
+        data = conn.recv(1024).decode() # seeker IP;UID
+        seeker_id = data
 
-        is_available = False
-        available_index = 0
-        for job in available: # testing if job is available
-            if job[0] == data and job[1] != 0: # job has to match and have a size greater then 0
-                is_available = True
-                break
+        seeker_with_result = False
+        for seeker in current_job_seekers: # testing to see if this seeker is back with the result of a previous job
+            if seeker == seeker_id:
+                seeker_with_result = True
 
-            available_index += 1 # only increments when not available since index starts at 0
+        if seeker_with_result == False:
+            print("job_seeker: My IP;UID is " + str(data))
+            conn.send(ip_uid.encode()) # creator IP:UID
+            print("job_creator: My IP;UID is " + ip_uid)
+            data = int.from_bytes(conn.recv(1), "big") # seeker service
+            seeker_service = data
+            print("job_seeker: I am offering " + str(data) + " service")
 
-        if is_available == True:
-            conn.send(bytes([1])) # if the job is available send a 1
-            print("job_creator: I have corresponding job " + str(data))
+            stored_seekers.append([seeker_id, seeker_service]) # storing seeker and the service it does
 
-            data = int.from_bytes(conn.recv(1), "big") # seeker accepting or denying job
-            if data == 1:
-                available[available_index][1] -= 1
-                print("job_seeker: I accept job")
-                conn.send("job_data".encode()) # creator sending job data
-                print("job_creator: Job data sent")
+            is_available = False
+            available_index = 0
+            for job in available: # testing if job is available
+                if job[0] == data and job[1] != 0: # job has to match and have a size greater then 0
+                    is_available = True
+                    break
+
+                available_index += 1 # only increments when not available since index starts at 0
+
+            if is_available == True:
+                conn.send(bytes([1])) # if the job is available send a 1
+                print("job_creator: I have corresponding job " + str(data))
+
+                data = int.from_bytes(conn.recv(1), "big") # seeker accepting or denying job
+                if data == 1:
+                    available[available_index][1] -= 1
+                    print("job_seeker: I accept job")
+                    conn.send("job_data".encode()) # creator sending job data
+                    print("job_creator: Job data sent\n")
+                    current_job_seekers.append(seeker_id)
+
+                else:
+                    print("job_seeker: I deny job")
             else:
-                print("job_seeker: I deny job")
+                conn.send(bytes([0])) # if the job is not available send a 0
+                print("job_creator: I do not have corresponding job " + str(data))
+                conn.close()
+                print("Connection closed with seeker\n")
+
         else:
-            conn.send(bytes([0])) # if the job is not available send a 0
-            print("job_creator: I do not have corresponding job " + str(data))
-            conn.close()
-            print("Connection closed with seeker")
+            conn.send(ip_uid.encode()) # creator IP:UID
+            print("job_creator: My IP;UID is " + ip_uid + " waiting for return status of job")
+            data = int.from_bytes(conn.recv(1), "big") # return code of job
+            print("job_seeker: Job completed with code " + str(data))
+            data = conn.recv(1024).decode() # result data
+            print("job_seeker: result: " + data)
+            current_job_seekers.remove(seeker_id)
 
+            for job in available:
+                if job[1] == 0:
+                    available.remove(job) # removes a job from available once it is completed
 
-
-
-        time.sleep(5)
+            print("\n")
 
 
 
