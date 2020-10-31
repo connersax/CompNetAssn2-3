@@ -32,16 +32,11 @@ def seeker_program():
         print("job_seeker: I accept " + str(int.from_bytes(service, "big")) + " job")
         client_socket.send(bytes([1]))
 
-        #RECEIVE JOB DA
-
-
-    # while message.lower().strip() != 'bye':
-    #     client_socket.send(message.encode())  # send message
-    #     data = client_socket.recv(1024).decode()  # receive response
-    #
-    #     print('Received from server: ' + data)  # show in terminal
-    #
-    #     message = input(" -> ")  # again take input
+# RECEIVE JOB DATA
+        data = client_socket.recv(1024).decode()
+        job_data = data # this would later be saved and used
+        print("job_creator: Job data sent")
+        print("job_seeker: Job data received- " + str(data))
 
     client_socket.close()  # close the connection
 
