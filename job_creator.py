@@ -21,7 +21,7 @@ def creator_program():
 
 
     # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-    available = [[1,1,'192.168.1.1'],[3,2,'192.168.1.1']] # defined as [job,size]
+    available = [[1,1,'192.168.1.1'],[3,2,'192.168.1.1']] # defined as [job, size, data]
     stored_seekers = [] # will be used when there is a job available it can do
     current_job_seekers = [] # seekers currently doing jobs from this creator
 
