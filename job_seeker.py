@@ -37,6 +37,7 @@ def seeker_program():
     # RECEIVE JOB DATA
             data = client_socket.recv(1024).decode()
             job_data = data # this would later be saved and used
+            print('\n' + data + '\n')
             print("job_creator: Job data sent\n")
 
             client_socket.close()  # close the connection

@@ -21,7 +21,7 @@ def creator_program():
 
 
     # types of jobs/services: 1=ICMP request, 2=Craft and Send IP packet, 3=Craft and Send TCP packet
-    available = [[1,1],[3,2]] # defined as [job,size]
+    available = [[1,1,'192.168.1.1'],[3,2,'192.168.1.1']] # defined as [job,size]
     stored_seekers = [] # will be used when there is a job available it can do
     current_job_seekers = [] # seekers currently doing jobs from this creator
 
@@ -64,7 +64,7 @@ def creator_program():
                 if data == 1:
                     available[available_index][1] -= 1
                     print("job_seeker: I accept job")
-                    conn.send("job_data".encode()) # creator sending job data
+                    conn.send(available[available_index][2].encode()) # creator sending job data
                     print("job_creator: Job data sent\n")
                     current_job_seekers.append(seeker_id)
 
