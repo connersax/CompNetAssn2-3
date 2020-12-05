@@ -19,7 +19,7 @@ def creator_program():
     server_socket.listen(1)
 
     # types of jobs/services: 1=ICMP flood, 2=TCP SYN flood, 3=Host Online, 4=Live IPs on a subnet
-    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,1,'192.168.2.1'], [4, 1, '192.168.2.1/24']] # defined as [job, size, data]
+    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,1,'192.168.2.1'], [4, 1, '192.168.2.0/24']] # defined as [job, size, data]
     stored_seekers = [] # will be used when there is a job available it can do
     current_job_seekers = [] # seekers currently doing jobs from this creator
 
