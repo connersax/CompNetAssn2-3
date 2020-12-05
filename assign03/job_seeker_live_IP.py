@@ -1,6 +1,10 @@
+"""
+One-To-One #3:
+
+Detect all live IP addresses on a given subnet. The job description contains the target subnetin a.b.c.d/x format.
+"""
 
 import socket
-import time
 import os
 from scapy.all import ARP, Ether, srp
 

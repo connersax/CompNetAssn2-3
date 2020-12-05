@@ -1,6 +1,10 @@
+"""
+One-To-Many #2:
+
+The job creator ask more than one job seeker to execute a TCP flood attack (any TCP floodattack) against a given port on a given IP.
+"""
 
 import socket
-import time
 import os
 from scapy.all import IP, TCP, send, RandShort
 

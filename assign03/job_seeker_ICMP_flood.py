@@ -1,6 +1,10 @@
+"""
+One-To-Many #1:
+
+The job creator ask more than one job seeker to execute an ICMP flood attack against a givenIP or subnet.
+"""
 
 import socket
-import time
 import os
 from scapy.all import IP, ICMP, send
 

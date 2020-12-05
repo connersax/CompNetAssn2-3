@@ -1,8 +1,14 @@
+"""
+One-To-One #1:
+
+Detect if a given IP address or Host Name is online or not. The job creator would like the jobseeker
+to find out if a given IP address is contacted to the network or not. The job descriptioncontains at
+least the target IP.
+"""
+
 from re import VERBOSE
 import socket
-import time
 import os
-import sys
 from scapy.all import IP, ICMP, sr1
 
 def host_online(target_ip):
