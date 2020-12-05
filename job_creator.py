@@ -4,7 +4,6 @@ import time
 import os
 from array import *
 
-
 def creator_program():
     # get the hostname
     host = socket.gethostname()
@@ -19,12 +18,10 @@ def creator_program():
     # configure how many client the server can listen simultaneously
     server_socket.listen(1)
 
-
-    # types of jobs/services: 1=ICMP flood, 2=TCP flood, 3=Craft and Send TCP packet
-    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,2,'192.168.1.1']] # defined as [job, size, data]
+    # types of jobs/services: 1=ICMP flood, 2=TCP SYN flood, 3=Host Online, 4=Port Open-Filtereed-Closed
+    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,1,'192.168.2.1']] # defined as [job, size, data]
     stored_seekers = [] # will be used when there is a job available it can do
     current_job_seekers = [] # seekers currently doing jobs from this creator
-
 
     while True:
         conn, address = server_socket.accept()  # accept new connection
@@ -91,21 +88,6 @@ def creator_program():
                     available.remove(job) # removes a job from available once it is completed
 
             print("\n")
-
-
-
-    # while True:
-    #     # receive data stream. it won't accept data packet greater than 1024 bytes
-    #     data = conn.recv(1024).decode()
-    #     if not data:
-    #         # if data is not received break
-    #         break
-    #     print("from connected user: " + str(data))
-    #     data = input(' -> ')
-    #     conn.send(data.encode())  # send data to the client
-
-    conn.close()  # close the connection
-
 
 if __name__ == '__main__':
     creator_program()
