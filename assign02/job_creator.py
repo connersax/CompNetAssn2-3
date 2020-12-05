@@ -18,8 +18,8 @@ def creator_program():
     # configure how many client the server can listen simultaneously
     server_socket.listen(1)
 
-    # types of jobs/services: 1=ICMP flood, 2=TCP SYN flood, 3=Host Online, 4=Port Open-Filtereed-Closed
-    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,1,'192.168.2.1']] # defined as [job, size, data]
+    # types of jobs/services: 1=ICMP flood, 2=TCP SYN flood, 3=Host Online, 4=Live IPs on a subnet
+    available = [[1,10,'192.168.1.1'],[2,10,'192.168.1.1'],[3,1,'192.168.2.1'], [4, 1, '192.168.2.1/24']] # defined as [job, size, data]
     stored_seekers = [] # will be used when there is a job available it can do
     current_job_seekers = [] # seekers currently doing jobs from this creator
 
@@ -80,7 +80,7 @@ def creator_program():
             data = int.from_bytes(conn.recv(1), "big") # return code of job
             print("job_seeker: Job completed with code " + str(data))
             data = conn.recv(1024).decode() # result data
-            print("job_seeker: result: " + data)
+            print("job_seeker: result:\n" + data)
             current_job_seekers.remove(seeker_id)
 
             for job in available:
